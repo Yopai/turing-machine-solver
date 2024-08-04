@@ -1,0 +1,281 @@
+table {
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+th, td {
+    border: 1px solid grey;
+}
+
+.row {
+    display: flex;
+    flex: 1;
+}
+
+.table {
+    margin-bottom: 1em;
+}
+
+.table, .table > .body {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.flex > * {
+    margin-right: 1em;
+}
+
+.table > .body,
+.table > .body > * {
+    flex: 1;
+}
+
+.table > .body {
+    border-top: 1px solid black;
+}
+
+.criterion {
+    flex: 1;
+    padding: 5px 10px;
+}
+
+.row:hover,
+.row:hover .cell {
+    background: lightskyblue;
+}
+
+.body .criterion {
+    border-top: 1px solid grey;
+}
+
+.cell {
+    width: 50px;
+    text-align: center;
+    border-left: 1px solid grey;
+    padding: 5px 0;
+}
+
+.body .cell {
+    border-top: 1px solid grey;
+}
+
+.table {
+    border: 2px solid black;
+}
+
+.row:not(.total) .hint {
+    float: left;
+    position: relative;
+    left: -10px;
+    margin-right: -5px;
+    font-size: 0.85em;
+}
+
+.hint.hide {
+    visibility: hidden;
+}
+
+.hint.yes::before,
+.hint.no::before {
+    background: transparent;
+}
+
+.hint.yes::before {
+    color: green;
+}
+
+.hint.no::before {
+    color: red;
+}
+
+.sheet {
+    display: flex;
+    align-items: flex-start;
+}
+
+.sheet > *:nth-child(n+1) {
+    margin-left: 1em;
+}
+
+.triangle,
+.square,
+.circle {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    padding-top: 5px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-weight: bold;
+    width: 1em;
+    height: 1em;
+}
+
+.solving-sheet .triangle,
+.solving-sheet .square,
+.solving-sheet .circle {
+    position: relative;
+    top: 0.1em;
+}
+
+input.triangle,
+input.square,
+input.circle {
+    width: 24px;
+    height: 24px;
+}
+
+.triangle {
+    background-color: rgba(0, 175, 192, 0.4);
+    clip-path: polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.square {
+    background-color: rgba(255, 255, 0, 0.6);
+}
+
+.circle {
+    background-color: rgba(78, 78, 87, 0.6);
+    clip-path: circle(50%);
+}
+
+input.triangle,
+input.square,
+input.circle {
+    appearance: none;
+    border: none;
+}
+
+.yes::before,
+.no::before {
+    display: inline-block;
+    color: white;
+    margin: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+.yes::before {
+    background-color: green;
+    content: "✔";
+}
+
+.no::before {
+    display: inline-block;
+    background-color: red;
+    content: "✗";
+}
+
+.tries .locked td button {
+    display: none;
+}
+
+.fullstrike {
+    --thickness: 5%;
+    --shadow-thickness: 1%;
+    --color: rgba(0, 0, 0, 0.8);
+    --shadow-color: white;
+}
+
+.fullstrike {
+    position: relative;
+}
+
+.fullstrike::after,
+.fullstrike::before {
+    /* required so that the pseudo-element is generated */
+    content: "";
+    /* cover full element */
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color);
+
+    clip-path: polygon(
+            100% calc(0% - var(--t)),
+            calc(100% + var(--t)) 0,
+            0% calc(100% + var(--t)),
+            calc(0% - var(--t)) 100%
+    );
+}
+
+.fullstrike::after {
+    --t: var(--thickness);
+}
+
+
+.fullstrike::before {
+    --t: calc(var(--thickness) + var(--shadow-thickness));
+    --color: var(--shadow-color);
+}
+
+.fullstrike {
+    background: #e3e0e0;
+    color: silver;
+}
+
+.solving-sheet {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.solving-sheet:not(.nightmare) > * {
+    width: 30%;
+}
+
+aside button.set-no {
+    padding: 0;
+    font-size: 0.8em;
+}
+
+.possible-digits td {
+    padding: 2px 10px;
+    text-align: center;
+    width: 3em;
+}
+
+.possible-digits td:not(.fullstrike) .value,
+.possible-digits td.fullstrike button
+{
+    display: none;
+}
+
+.possible-codes {
+    display: flex;
+    flex-wrap: wrap;
+    width: 175px;
+    font-size: 0.9em;
+    font-family: monospace;
+}
+
+.possible-codes > * {
+    margin-right: 0.5em;
+}
+
+.possible-codes .hide {
+    display: none;
+}
+
+.row.fullstrike {
+    display: none;
+}
+
+#btn-check.hide {
+    display: none;
+}
+
+.cell.fullstrike button {
+    display: none;
+}

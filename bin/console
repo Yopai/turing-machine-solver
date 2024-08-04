@@ -1,0 +1,11 @@
+#!/usr/local/bin/wenv php
+<?php
+namespace App\Command;
+
+use App\ConsoleApp;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$app = new ConsoleApp(dirname(__DIR__).'/config');
+$command = $app->createCommand(array_slice($argv, 1));
+$command->run(false);

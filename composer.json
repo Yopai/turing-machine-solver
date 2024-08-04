@@ -1,0 +1,29 @@
+{
+  "name": "povares/tmhacker",
+  "description": "Showing and exploring solutions from Turing Machine, the game",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pierre-Olivier Vares",
+      "email": "pierre.olivier.vares@free.fr"
+    }
+  ],
+  "require": {
+    "twig/twig": "^3.7",
+    "symfony/flex": "^2.4",
+    "symfony/apache-pack": "^1.0",
+    "ext-fileinfo": "*",
+    "ext-readline": "*",
+    "ext-zlib": "*",
+    "ext-sodium": "*"
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/flex": true
+    }
+  }
+}

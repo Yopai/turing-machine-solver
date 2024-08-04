@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/sheet.css"/>
+    <script>
+        const hash = '{{ hash }}';
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/min.js/0.2.3/$.min.js"
+            integrity="sha512-5cEGd2WfKHAqhng7fVD0W9DrfnMDzSLCvM3nd8RYaXft02zMiiVBjUmn0JTFAa8rSdFwIj7Amx78q/WNBIk5zA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer">
+    </script>
+    <script src="/sheet.js" type="module"></script>
+</head>
+<body>
+
+<div class="sheet">
+    <div>
+        <header>
+            <div class="flex">
+                {{ _self.renderTries(problem, symbols, letters) }}
+                {{ _self.renderPossibleDigits(symbols) }}
+            </div>
+            <button id="btn-reset-tries">Reset</button>
+        </header>
+
+        <section class="solving-sheet {{ problem.nightmare ? 'nightmare' }}">
+            {% set criteriaGroups = problem.shuffledCriteriaGroups %}
+            {% if problem.nightmare %}
+                {{ _self.renderGroups(criteriaGroups, letters) }}
+            {% else %}
+                {% for n, group in criteriaGroups %}
+                    {{ _self.renderGroups([group], [letters[n]]) }}
+                {% endfor %}
+            {% endif %}
+        </section>
+        <button id="btn-reset">Reset</button>
+        <button id="btn-new">New</button>
+    </div>
+
+    <aside>
+        <div class="possible-codes">
+            {% for code in codes %}
+                <div id="pcode-{{ code }}"
+                     data-triangle="{{ code.triangle }}"
+                     data-square="{{ code.square }}"
+                     data-circle="{{ code.circle }}"
+                >
+                    <a href="#">{{ code }}</a>
+                    <button class="set-no" data-code="{{ code }}">✗</button>
+                </div>
+            {% endfor %}
+            <button id="btn-clean">Clean removed codes</button>
+        </div>
+        {% if problem.generated %}
+            <button id="btn-check" class="hide">Check!</button>
+        {% endif %}
+    </aside>
+</div>
+
+</body>
+</html>
+
+{% macro renderGroups(groups, letters) %}
+    <div class="table">
+        <div class="head">
+            <div class="row total">
+                <div class="criterion">Total</div>
+                {% for letter in letters %}
+                    <div class="cell" data-letter="{{ letter }}">
+                        <span class="hint yes hide"></span>
+                        <span class="hint no hide"></span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="head">
+            <div class="row">
+                <div class="criterion"></div>
+                {% for letter in letters %}
+                    <div class="cell">{{ letter }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% for group in groups %}
+            <div class="body">
+                {% for criterion in group %}
+                    <div class="row" data-id="{{ criterion.id }}">
+                        <div class="criterion">
+                            <span class="hint yes hide"></span><span class="hint no hide"></span>
+                            #{{ criterion.card }} - {{ criterion.label|escape('html')|replace({
+                                '▲': '<span class="triangle"></span>',
+                                '■': '<span class="square"></span>',
+                                '●': '<span class="circle"> </span>',
+                                '<=': '≤'
+                            })|raw }}
+                        </div>
+                        {% for letter in letters %}
+                            <div class="cell" data-letter="{{ letter }}">
+                                <button type="button" class="exclude" data-click="strike">✗&#xfe0e;</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% macro renderTries(problem, symbols, letters) %}
+    <table class="tries">
+        <tr>
+            <th colspan="{{ symbols|length }}"></th>
+            <th></th>
+            {% for letter in letters %}
+                <td>{{ letter }}</td>
+            {% endfor %}
+        </tr>
+        <template id="try-row" data-next-id-value="1">
+            <tr>
+                {% for symbol in symbols %}
+                    <th><input class="{{ symbol }}" size="3" min="1" max="5"/></th>
+                {% endfor %}
+                <th>
+                    <button data-click="hint">⚇︎</button>
+                </th>
+                {% for letter in letters %}
+                    <td>
+                        {% if problem.generated %}
+                            <button class="try" data-letter="{{ letter }}">
+                                {{ letter }}
+                            </button>
+                        {% else %}
+                            <button data-answer="yes">✔</button>
+                            <button data-answer="no">✗</button>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        </template>
+    </table>
+{% endmacro %}
+
+{% macro renderPossibleDigits(symbols) %}
+<table class="possible-digits">
+    <tr>
+        {% for symbol in symbols %}
+            <th><span class="{{ symbol }}"></span></th>
+        {% endfor %}
+    </tr>
+    {% for i in range(1,5)|reverse %}
+        <tr>
+            {% for symbol in symbols %}
+                <td id="digit-{{ symbol }}-{{ i }}" class="digit">
+                    <button class="set-yes">{{ i }}</button>
+                    <button class="set-no">✗</button>
+                    <span class="value">{{ i }}</span>
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+{% endmacro %}
